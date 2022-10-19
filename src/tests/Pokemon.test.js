@@ -16,8 +16,8 @@ describe('Testa o componente Pokemon', () => {
     const pokemonWeight = screen.getByTestId('pokemon-weight');
     expect(pokemonWeight).toHaveTextContent('Average weight: 6.0 kg');
 
-    const pokemonImage = screen.getByRole('img');
-    expect(pokemonImage.alt).toBe('Pikachu sprite');
+    const pokemonImage = screen.getByRole('img', { name: 'Pikachu sprite' });
+    expect(pokemonImage.src).toBe('https://cdn2.bulbagarden.net/upload/b/b2/Spr_5b_025_m.png');
   });
 
   it('Testa se o componente tem um link de Details', () => {
@@ -34,7 +34,21 @@ describe('Testa o componente Pokemon', () => {
     userEvent.click(detailsLink);
 
     const { pathname } = history.location;
-    console.log(pathname);
     expect(pathname).toBe('/pokemons/25');
+  });
+
+  it('Testa se tem um ícone de estrela nos pokémons favoritados', () => {
+    renderWithRouter(<App />);
+
+    const detailsLink = screen.getByRole('link', { name: /details/i });
+    userEvent.click(detailsLink);
+
+    const favoriteCheck = screen.getByLabelText(/favoritado/i);
+    expect(favoriteCheck).toBeInTheDocument();
+    userEvent.click(favoriteCheck);
+
+    const favoriteIcon = screen.getByAltText(/is marked/i);
+    expect(favoriteIcon.src).toBe('http://localhost/star-icon.svg');
+    expect(favoriteIcon.alt).toBe('Pikachu is marked as favorite');
   });
 });
