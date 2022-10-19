@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../renderWithRouter';
 import App from '../App';
 
-describe('Testa as rotas da aplicação Pokedex', () => {
+describe('Testa o componente App', () => {
   it('Testa o link Home', () => {
     const { history } = renderWithRouter(<App />);
 
