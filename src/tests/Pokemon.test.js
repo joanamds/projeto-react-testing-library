@@ -1,1 +1,40 @@
-test('', () => {});
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import renderWithRouter from '../renderWithRouter';
+import App from '../App';
+
+describe('Testa o componente Pokemon', () => {
+  it('Testa se é renderizado um card com as informações de determinado pokemon', () => {
+    renderWithRouter(<App />);
+
+    const pokemonName = screen.getByTestId('pokemon-name');
+    expect(pokemonName).toHaveTextContent('Pikachu');
+
+    const pokemonType = screen.getByTestId('pokemon-type');
+    expect(pokemonType).toHaveTextContent('Electric');
+
+    const pokemonWeight = screen.getByTestId('pokemon-weight');
+    expect(pokemonWeight).toHaveTextContent('Average weight: 6.0 kg');
+
+    const pokemonImage = screen.getByRole('img');
+    expect(pokemonImage.alt).toBe('Pikachu sprite');
+  });
+
+  it('Testa se o componente tem um link de Details', () => {
+    renderWithRouter(<App />);
+
+    const detailsLink = screen.getByRole('link', { name: /details/i });
+    expect(detailsLink).toBeInTheDocument();
+  });
+
+  it('Testa se ao clicar no link de Details é redirecionado para a página de detalhes', () => {
+    const { history } = renderWithRouter(<App />);
+
+    const detailsLink = screen.getByRole('link', { name: /details/i });
+    userEvent.click(detailsLink);
+
+    const { pathname } = history.location;
+    console.log(pathname);
+    expect(pathname).toBe('/pokemons/25');
+  });
+});
