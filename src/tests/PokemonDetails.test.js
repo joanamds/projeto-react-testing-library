@@ -52,5 +52,21 @@ describe('Testa o componente Pokemon Details', () => {
     const favoriteSelect = screen.getByLabelText(/favoritado/i);
     expect(favoriteSelect).toBeInTheDocument();
     userEvent.click(favoriteSelect);
+
+    const favoriteIcon = screen.getByAltText(/is marked/i);
+    expect(favoriteIcon).toBeInTheDocument();
+  });
+
+  it('Testa se ao clicar novamente no checkbox, o pokemón não é mais favoritado', () => {
+    renderWithRouter(<App />);
+
+    const detailsLink = screen.getByRole('link', { name: /details/i });
+    userEvent.click(detailsLink);
+
+    const favoriteSelect = screen.getByLabelText(/favoritado/i);
+    userEvent.click(favoriteSelect);
+
+    const favoriteIcon = screen.queryByAltText(/is marked/i);
+    expect(favoriteIcon).toBeNull();
   });
 });
