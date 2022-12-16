@@ -21,7 +21,6 @@ describe('Testa o componente About', () => {
     renderWithRouter(<About />);
 
     const aboutText = screen.getAllByText(/pokémons/i);
-    console.log(aboutText);
     expect(aboutText.length).toBe(2);
   });
 
